@@ -1,0 +1,153 @@
+.menu-sidebar {
+	background-color: #fff;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	border-right: 1px solid black;
+	overflow-y: auto;
+	z-index: 20;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	transform: translateX(-100%);
+	transition: transform ease-in-out 300ms;
+
+	@media (any-pointer: coarse) {
+		width: 100%;
+		top: auto;
+		border-right: none;
+		border-top: 1px solid black;
+	}
+
+	&__menu {
+		display: flex;
+		flex-direction: column;
+		margin-top: 80px;
+
+		@media (any-pointer: coarse) {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 0;
+			padding: 0 14px;
+		}
+
+		.mobile {
+			display: none;
+			@media (any-pointer: coarse) {
+				display: flex;
+			}
+		}
+	}
+
+	&__links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		margin-top: 20px;
+		gap: 4px;
+		padding: 0 12px;
+
+		@media (any-pointer: coarse) {
+			display: none;
+		}
+	}
+
+	&.active {
+		transform: translateX(0);
+	}
+
+	.menu-sidebar-select {
+		.select-with-image__field {
+			&::after {
+				transform: rotate(180deg) translateY(50%);
+			}
+		}
+		.select-with-image__list {
+			top: 0;
+			bottom: auto;
+			transform: translateY(-100%);
+		}
+	}
+}
+
+.menu-item {
+	@extend .link-btn;
+	display: flex;
+	align-items: center;
+	text-align: left;
+	padding: 6px;
+	padding-left: 5px;
+	font-size: 20px;
+	position: relative;
+	@media (any-pointer: fine) {
+		margin-left: 8px;
+		&:not(.selected) {
+			border-radius: 6px;
+			&:hover {
+				background-color: RGB(242, 242, 242);
+			}
+		}
+	}
+	@media (any-pointer: coarse) {
+		padding: 12px 8px;
+	}
+	&.selected {
+		margin-left: 0;
+		span {
+			font-weight: 900;
+		}
+		@media (any-pointer: fine) {
+			border-left: 5px solid orange;
+			padding-left: 7px;
+			cursor: default;
+		}
+		@media (any-pointer: coarse) {
+			border-bottom: 5px solid orange;
+			padding-bottom: 7px;
+		}
+	}
+
+	.count-label {
+		background-color: red;
+		position: absolute;
+		right: 0;
+		top: 0;
+		color: white;
+		padding: 4px;
+		border-radius: 50%;
+		font-size: 10px;
+		z-index: 1;
+		transform: translateY(-6px);
+
+		@media (any-pointer: coarse) {
+			transform: translate(0, 0);
+		}
+	}
+	div {
+		margin-left: 8px;
+		padding-right: 20px;
+		position: relative;
+		display: flex;
+		.text {
+			@media (any-pointer: coarse) {
+				display: none;
+			}
+		}
+		@media (any-pointer: coarse) {
+			position: static;
+			padding: 0;
+			margin: 0;
+		}
+	}
+	i {
+		width: 1.2em;
+		height: 1.2em;
+		font-style: normal;
+	}
+	& > * {
+		pointer-events: none;
+	}
+}

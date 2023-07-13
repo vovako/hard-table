@@ -1,0 +1,360 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+aside,
+nav,
+footer,
+header,
+section,
+main {
+  display: block;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+a:visited {
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  text-align: center;
+  display: inline-block;
+}
+
+body {
+  font-family: "Lato";
+}
+
+.link-btn, .menu-icon, .menu-item {
+  background-color: transparent;
+  border: 0;
+}
+
+.container {
+  padding: 0 15px;
+  width: 1230px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  display: flex;
+  height: 100%;
+}
+
+.main {
+  background-color: gray;
+  flex: 1;
+}
+
+.body {
+  background-color: yellow;
+  padding: 10px;
+  transition: ease-in-out 300ms;
+  transition-property: margin, padding;
+}
+
+.select-with-image {
+  user-select: none;
+  position: relative;
+  background-color: transparent;
+}
+.select-with-image__field {
+  position: relative;
+}
+.select-with-image__field::after {
+  content: url(../img/icons/ddArrow.svg);
+  position: absolute;
+  display: block;
+  top: 50%;
+  right: 0;
+  transform: translateY(-35%);
+  pointer-events: none;
+}
+.select-with-image__field.active::after {
+  transform: translateY(-50%) rotateX(180deg);
+}
+.select-with-image__field .select-with-image__btn {
+  padding-right: 20px;
+}
+.select-with-image__list {
+  position: absolute;
+  background-color: rgb(197, 197, 197);
+  border-radius: 8px;
+  left: 0;
+  bottom: 0;
+  transform: translateY(100%);
+  width: max-content;
+  display: none;
+  z-index: 10;
+}
+.select-with-image__list > .select-with-image__btn {
+  transition: none;
+}
+.select-with-image__list > .select-with-image__btn:hover {
+  background-color: RGB(30, 144, 255);
+}
+.select-with-image__list.active {
+  display: block;
+}
+.select-with-image__btn {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.select-with-image__btn img {
+  max-width: 22px;
+  min-height: 1em;
+  margin-right: 9px;
+}
+
+.menu-sidebar {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-right: 1px solid black;
+  overflow-y: auto;
+  z-index: 20;
+  transform: translateX(-100%);
+  transition: transform ease-in-out 300ms;
+}
+.menu-sidebar::-webkit-scrollbar {
+  display: none;
+}
+@media (any-pointer: coarse) {
+  .menu-sidebar {
+    width: 100%;
+    top: auto;
+    border-right: none;
+    border-top: 1px solid black;
+  }
+}
+.menu-sidebar__menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 80px;
+}
+@media (any-pointer: coarse) {
+  .menu-sidebar__menu {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
+    padding: 0 14px;
+  }
+}
+.menu-sidebar__menu .mobile {
+  display: none;
+}
+@media (any-pointer: coarse) {
+  .menu-sidebar__menu .mobile {
+    display: flex;
+  }
+}
+.menu-sidebar__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+  gap: 4px;
+  padding: 0 12px;
+}
+@media (any-pointer: coarse) {
+  .menu-sidebar__links {
+    display: none;
+  }
+}
+.menu-sidebar.active {
+  transform: translateX(0);
+}
+.menu-sidebar .menu-sidebar-select .select-with-image__field::after {
+  transform: rotate(180deg) translateY(50%);
+}
+.menu-sidebar .menu-sidebar-select .select-with-image__list {
+  top: 0;
+  bottom: auto;
+  transform: translateY(-100%);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  padding: 6px;
+  padding-left: 5px;
+  font-size: 20px;
+  position: relative;
+}
+@media (any-pointer: fine) {
+  .menu-item {
+    margin-left: 8px;
+  }
+  .menu-item:not(.selected) {
+    border-radius: 6px;
+  }
+  .menu-item:not(.selected):hover {
+    background-color: RGB(242, 242, 242);
+  }
+}
+@media (any-pointer: coarse) {
+  .menu-item {
+    padding: 12px 8px;
+  }
+}
+.menu-item.selected {
+  margin-left: 0;
+}
+.menu-item.selected span {
+  font-weight: 900;
+}
+@media (any-pointer: fine) {
+  .menu-item.selected {
+    border-left: 5px solid orange;
+    padding-left: 7px;
+    cursor: default;
+  }
+}
+@media (any-pointer: coarse) {
+  .menu-item.selected {
+    border-bottom: 5px solid orange;
+    padding-bottom: 7px;
+  }
+}
+.menu-item .count-label {
+  background-color: red;
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: white;
+  padding: 4px;
+  border-radius: 50%;
+  font-size: 10px;
+  z-index: 1;
+  transform: translateY(-6px);
+}
+@media (any-pointer: coarse) {
+  .menu-item .count-label {
+    transform: translate(0, 0);
+  }
+}
+.menu-item div {
+  margin-left: 8px;
+  padding-right: 20px;
+  position: relative;
+  display: flex;
+}
+@media (any-pointer: coarse) {
+  .menu-item div .text {
+    display: none;
+  }
+}
+@media (any-pointer: coarse) {
+  .menu-item div {
+    position: static;
+    padding: 0;
+    margin: 0;
+  }
+}
+.menu-item i {
+  width: 1.2em;
+  height: 1.2em;
+  font-style: normal;
+}
+.menu-item > * {
+  pointer-events: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  transition: background-color ease-in-out 300ms;
+}
+.header.active {
+  background-color: #fff;
+}
+.header.active .header__page-title {
+  opacity: 1;
+}
+@media (any-pointer: coarse) {
+  .header {
+    display: none;
+  }
+}
+.header__page-title {
+  transition: opacity ease-in-out 300ms;
+  font-size: 20px;
+  margin-left: 12px;
+  opacity: 0;
+}
+@media (any-pointer: coarse) {
+  .header__page-title {
+    display: none;
+  }
+}
+
+.menu-sidebar__actions {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.menu-icon {
+  font-size: 30px;
+  margin-right: 20px;
+}
+@media (any-pointer: coarse) {
+  .menu-icon {
+    display: none;
+  }
+}
+
+.logo {
+  margin-right: 24px;
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.logo .image {
+  width: 60px;
+}
+.logo .text {
+  margin-left: 8px;
+}
+
+.menu-sidebar-select .select-with-image__field span {
+  display: none;
+}
+.menu-sidebar-select .select-with-image__btn {
+  font-size: 20px;
+}
+.menu-sidebar-select .select-with-image__btn span {
+  margin-left: 4px;
+}
