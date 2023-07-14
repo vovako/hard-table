@@ -65,11 +65,11 @@
 				transform: rotate(180deg) translateY(50%);
 			}
 		}
-		.select-with-image__list {
-			top: 0;
-			bottom: auto;
-			transform: translateY(-100%);
-		}
+	}
+	.select-with-image__list {
+		top: 0;
+		bottom: auto;
+		transform: translateY(-100%);
 	}
 }
 
@@ -94,6 +94,13 @@
 	@media (any-pointer: coarse) {
 		padding: 12px 8px;
 	}
+
+	&_offset-top {
+		@media (any-pointer: fine) {
+			margin-top: 20px;
+		}
+	}
+
 	&.selected {
 		margin-left: 0;
 		span {
@@ -149,5 +156,12 @@
 	}
 	& > * {
 		pointer-events: none;
+	}
+}
+.select-with-image__list {
+	&.overlay {
+		position: fixed;
+		bottom: auto;
+		transform: none;
 	}
 }

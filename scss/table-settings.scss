@@ -1,0 +1,49 @@
+.table-settings {
+	background-color: #fff;
+	border-radius: 12px;
+	flex: 1;
+	padding: 8px 16px;
+	border: 1px rgb(176, 176, 176) solid;
+	height: fit-content;
+
+	& > * {
+		margin-bottom: 10px;
+	}
+}
+
+.table-settings-select {
+	border: rgb(176, 176, 176) 1px solid;
+	width: max-content;
+	margin-left: auto;
+
+	.select-with-image__list {
+		left: auto;
+		right: 0;
+	}
+	.select-with-image__field {
+		.select-with-image__btn {
+			span {
+				display: none;
+			}
+		}
+	}
+	.select-with-image__btn {
+		span {
+			opacity: 0.5;
+		}
+	}
+}
+
+.table-settings-select-with-textarea {
+	border: rgb(176, 176, 176) 1px solid;
+	width: max-content;
+
+	.select-with-image__list {
+	}
+	& ~ .target {
+		display: none;
+		&.active {
+			display: block;
+		}
+	}
+}
