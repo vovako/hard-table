@@ -29,9 +29,6 @@ ul {
 a {
   text-decoration: none;
 }
-a:visited {
-  color: inherit;
-}
 
 button {
   cursor: pointer;
@@ -75,10 +72,6 @@ body {
   min-height: 100%;
 }
 
-.main {
-  flex: 1;
-}
-
 .body {
   background-color: rgb(214, 216, 228);
   padding: 10px;
@@ -90,6 +83,10 @@ body {
 .body-wrapper {
   display: flex;
   gap: 16px;
+  position: sticky;
+  left: 0;
+  width: 100vw;
+  transition: left ease-in-out 300ms;
 }
 
 .select-with-image {
@@ -170,15 +167,13 @@ input[type=checkbox]:checked,
 input[type=checkbox]:not(:checked),
 input[type=radio]:checked,
 input[type=radio]:not(:checked) {
-  position: absolute;
-  left: -9999px;
+  display: none;
 }
 
 input[type=checkbox]:checked + label,
 input[type=checkbox]:not(:checked) + label,
 input[type=radio]:checked + label,
 input[type=radio]:not(:checked) + label {
-  display: inline-block;
   position: relative;
   padding-left: 28px;
   line-height: 20px;
@@ -195,7 +190,7 @@ input[type=radio]:not(:checked) + label:before {
   top: 0px;
   width: 18px;
   height: 18px;
-  border: 1px solid #dddddd;
+  border: 1px solid #bbb;
   background-color: #ffffff;
 }
 
@@ -246,6 +241,21 @@ input[type=radio]:not(:checked) + label:after {
 
 input[type=checkbox]:checked + label:after,
 input[type=radio]:checked + label:after {
+  opacity: 1;
+}
+
+.table-fix-cb + label {
+  padding-left: 0 !important;
+}
+.table-fix-cb + label i {
+  color: black;
+  opacity: 0.2;
+  font-size: 20px;
+}
+.table-fix-cb + label::before, .table-fix-cb + label::after {
+  display: none;
+}
+.table-fix-cb:checked + label i {
   opacity: 1;
 }
 
@@ -631,5 +641,92 @@ input[type=radio]:checked + label:after {
   display: none;
 }
 .table-settings-select-with-textarea ~ .target.active {
+  display: block;
+}
+
+.body-table {
+  width: 100%;
+  margin-top: 24px;
+}
+.body-table table {
+  width: 100%;
+  border-collapse: collapse;
+  position: relative;
+}
+.body-table table th,
+.body-table table td {
+  box-shadow: inset 0 0 0 1px gray;
+  padding: 4px 6px;
+  text-align: left;
+}
+.body-table table th {
+  position: relative;
+  padding-right: 1.3em;
+  background-color: rgb(163, 255, 223);
+}
+.body-table table th .col-fix-ch {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-right: 0.2em;
+}
+.body-table table td {
+  background-color: rgb(255, 255, 255);
+}
+.body-table .table-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.body-table .table-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.body-table .col-sort {
+  padding-right: 3em;
+}
+.body-table .col-sort__btn {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: 0;
+  font-size: 20px;
+  opacity: 0.2;
+}
+.body-table .col-sort__btn.active {
+  opacity: 1;
+}
+.body-table .row-fix th,
+.body-table .row-fix td {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.body-table .row-fix th.col-fix,
+.body-table .row-fix td.col-fix {
+  z-index: 2;
+}
+.body-table .col-fix {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.to-begin-table {
+  font-size: 40px;
+  color: black;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: 0;
+  display: none;
+}
+.to-begin-table.active {
   display: block;
 }

@@ -4,6 +4,8 @@ const header = document.querySelector('.header')
 const sidebarMenuActions = document.querySelector('.menu-sidebar__actions')
 const bodySection = document.querySelector('.body')
 const bodyMenu = document.querySelector('.body-menu__wrapper')
+const bodyTable = document.querySelector('.body-table')
+const bodyWrapper = document.querySelector('.body-wrapper')
 
 const isMobile = window.matchMedia('(any-pointer: coarse)').matches
 
@@ -58,13 +60,23 @@ document.addEventListener('click', function (e) {
 		target.classList.add('active')
 		e.preventDefault()
 		const blockID = target.getAttribute('href').substr(1)
-		document.getElementById(blockID).scrollIntoView( {
+		document.getElementById(blockID).scrollIntoView({
 			behavior: 'smooth',
 		})
 		bodyMenu.classList.add('lock')
 		setTimeout(() => {
 			bodyMenu.classList.remove('lock')
 		}, 700)
+	} else if (target.classList.contains('table-fix-cb')) {
+		if (target.classList.contains('target-row')) {
+			const tr = target.closest('tr')
+			// tr.classList.toggle('row-fix')
+			toggleFixRow(tr.rowIndex, tr.dataset.rowId)
+
+		} else if (target.classList.contains('target-col')) {
+			const th = target.closest('th')
+			toggleFixColumn(th.cellIndex, th.dataset.colId)
+		}
 	}
 })
 
@@ -72,11 +84,20 @@ function updatePageTitle() {
 	headerPageTitle.textContent = document.querySelector('.menu-item.selected .text').textContent
 }
 function openMenuSidebar() {
+
 	sidebarMenu.classList.add('active')
 	header.classList.remove('active')
 	bodySection.style.marginLeft = sidebarMenu.clientWidth + 'px'
 	bodySection.style.paddingTop = '10px'
 	bodyMenu.style.top = bodySection.style.paddingTop
+
+	//fix body-wrapper
+	const sidebarWidth = sidebarMenuActions.clientWidth
+	bodyWrapper.style.width = `calc(100vw - ${sidebarWidth + 20 + (window.innerWidth - document.documentElement.clientWidth) + 'px'})`
+	bodyWrapper.style.left = sidebarWidth + 10 + 'px'
+
+	updateFixRows()
+	updateFixColumns()
 }
 function closeMenuSidebar() {
 	sidebarMenu.classList.remove('active')
@@ -84,6 +105,13 @@ function closeMenuSidebar() {
 	bodySection.style.marginLeft = 0;
 	bodySection.style.paddingTop = header.clientHeight + 10 + 'px'
 	bodyMenu.style.top = bodySection.style.paddingTop
+
+	//fix body-wrapper
+	bodyWrapper.style.width = `calc(100vw - ${(window.innerWidth - document.documentElement.clientWidth + 20) + 'px'})`
+	bodyWrapper.style.left = '10px'
+
+	updateFixRows()
+	updateFixColumns()
 }
 
 
@@ -158,9 +186,9 @@ if (multiSelect) {
 	const input = multiSelect.querySelector('input')
 	const list = multiSelect.querySelector('.multiSelect__list')
 	updateMultiSelect()
-	
+
 	input.addEventListener('input', function () {
-		
+
 		if (input.value !== '') {
 			list.classList.add('active')
 		} else {
@@ -185,7 +213,6 @@ const observedSections = document.querySelectorAll('.observed-section')
 const menuObserver = new IntersectionObserver((entries) => {
 	entries.forEach(entry => {
 		if (entry.isIntersecting) {
-			console.log(entry.boundingClientRect);
 
 			bodyMenuItems.forEach(item => {
 				const id = item.getAttribute('href').substring(1)
@@ -200,3 +227,100 @@ const menuObserver = new IntersectionObserver((entries) => {
 	threshold: 0.01
 })
 observedSections.forEach(item => menuObserver.observe(item))
+
+const toTopBtn = document.querySelector('.to-begin-table')
+toTopBtn.addEventListener('click', function () {
+	let yPos = document.querySelector('table').offsetTop
+	if (header.classList.contains('active')) yPos -= header.clientHeight
+	scrollTo({
+		top: yPos,
+		behavior: 'smooth'
+	})
+})
+const tableObserverIn = new IntersectionObserver((entries) => {
+	const entry = entries[0]
+	if (entry.isIntersecting) {
+		toTopBtn.classList.add('active')
+	} else {
+		toTopBtn.classList.remove('active')
+	}
+}, {
+	rootMargin: '0px 0px -100% 0px'
+})
+
+tableObserverIn.observe(document.querySelector('tbody'))
+
+//table fix logic
+let fixedRows = {}
+let fixedColumns = {}
+function toggleFixRow(pos, id) {
+	if (fixedRows[pos]) {
+		delete fixedRows[pos]
+	} else {
+		fixedRows[pos] = id
+	}
+	updateFixRows()
+}
+function toggleFixColumn(pos, id) {
+	if (fixedColumns[pos]) {
+		delete fixedColumns[pos]
+	} else {
+		fixedColumns[pos] = id
+	}
+	updateFixColumns()
+}
+
+function updateFixRows() {
+	const rows = document.querySelectorAll('[data-row-id]');
+	[...rows].forEach(r => {
+		r.classList.remove('row-fix');
+		[...r.children].forEach(c => c.style.top = null)
+	})
+
+	const entries = Object.entries(fixedRows)
+	let prevRowElem = null
+	let yPos = header.classList.contains('active') ? header.clientHeight : 0
+	for (const [pos, id] of entries) {
+		if (prevRowElem) yPos += prevRowElem.getBoundingClientRect().height
+		const row = document.querySelector(`[data-row-id="${id}"]`)
+		row.classList.add('row-fix');
+		[...row.children].forEach(c => c.style.top = yPos + 'px')
+		prevRowElem = row
+	}
+}
+
+function updateFixColumns() {
+	const cells = [...document.querySelectorAll('th'), ...document.querySelectorAll('td')];
+	[...cells].forEach(c => {
+		c.classList.remove('col-fix')
+		c.style.left = null
+	})
+
+	const entries = Object.entries(fixedColumns)
+	let prevColElem = null
+	let xPos = sidebarMenu.classList.contains('active') ? sidebarMenu.clientWidth : 0
+	for (const [pos, id] of entries) {
+
+		if (prevColElem) xPos += prevColElem.getBoundingClientRect().width
+
+		const col = document.querySelector(`[data-col-id="${id}"]`)
+		const colIndex = col.cellIndex
+		const rows = document.querySelectorAll('[data-row-id]');
+		[...rows].forEach(r => {
+			const cell = r.children[colIndex]
+			cell.style.left = xPos + 'px'
+			cell.classList.add('col-fix');
+		})
+		prevColElem = col
+	}
+}
+
+const cbAllcb = document.querySelector('.all-cb-actions')
+cbAllcb.addEventListener('change', function() {
+	const allActionCb = document.querySelector('tbody').querySelectorAll('.action-cb')
+	if (cbAllcb.checked) {
+		allActionCb.forEach(c => c.checked = true)
+	} else {
+		allActionCb.forEach(c => c.checked = false)
+	}
+})

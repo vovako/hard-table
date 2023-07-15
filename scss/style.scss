@@ -35,7 +35,6 @@ $md4: 479.98;
 }
 
 .main {
-	flex: 1;
 }
 
 .body {
@@ -49,6 +48,10 @@ $md4: 479.98;
 .body-wrapper {
 	display: flex;
 	gap: 16px;
+	position: sticky;
+	left: 0; //edit in js
+	width: 100vw; //edit in js
+	transition: left ease-in-out 300ms;
 }
 
 .select-with-image {
@@ -135,15 +138,13 @@ input[type="checkbox"]:checked,
 input[type="checkbox"]:not(:checked),
 input[type="radio"]:checked,
 input[type="radio"]:not(:checked) {
-	position: absolute;
-	left: -9999px;
+	display: none;
 }
 
 input[type="checkbox"]:checked + label,
 input[type="checkbox"]:not(:checked) + label,
 input[type="radio"]:checked + label,
 input[type="radio"]:not(:checked) + label {
-	display: inline-block;
 	position: relative;
 	padding-left: 28px;
 	line-height: 20px;
@@ -160,7 +161,7 @@ input[type="radio"]:not(:checked) + label:before {
 	top: 0px;
 	width: 18px;
 	height: 18px;
-	border: 1px solid #dddddd;
+	border: 1px solid #bbb;
 	background-color: #ffffff;
 }
 
@@ -212,6 +213,28 @@ input[type="radio"]:not(:checked) + label:after {
 input[type="checkbox"]:checked + label:after,
 input[type="radio"]:checked + label:after {
 	opacity: 1;
+}
+
+.table-fix-cb {
+	& + label {
+		padding-left: 0!important;
+
+		i {
+			color: black;
+			opacity: 0.2;
+			font-size: 20px;
+		}
+		&::before, &::after {
+			display: none;
+		}
+	}
+	&:checked {
+		& + label {
+			i {
+				opacity: 1;
+			}
+		}
+	}
 }
 
 //input with tag
@@ -273,6 +296,7 @@ input[type="radio"]:checked + label:after {
 @import "header";
 @import "body-menu";
 @import "table-settings";
+@import "body-table";
 
 // +++++++++++++++++++++
 // * {
