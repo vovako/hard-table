@@ -12,6 +12,8 @@ const isMobile = window.matchMedia('(any-pointer: coarse)').matches
 window.addEventListener('load', function () {
 	if (!isMobile) {
 		sidebarMenu.style.minWidth = sidebarMenuActions.clientWidth + 'px'
+		header.style.height = sidebarMenuActions.clientHeight + 'px'
+		header.style.paddingLeft = sidebarMenuActions.clientWidth + 'px'
 		openMenuSidebar()
 		updatePageTitle()
 	}
@@ -323,4 +325,33 @@ cbAllcb.addEventListener('change', function() {
 	} else {
 		allActionCb.forEach(c => c.checked = false)
 	}
+})
+
+const allTooltips = document.querySelectorAll('.tooltip')
+allTooltips.forEach(tooltip => {
+	tooltip.addEventListener('mouseover', function() {
+		const tip = tooltip.querySelector('.tip') 
+		tip.classList.remove('bottom')
+
+		if (tip.getBoundingClientRect().top < 0) {
+			tip.classList.add('bottom')
+		} 
+	})
+})
+
+const allPopup = document.querySelectorAll('.popup')
+allPopup.forEach(popup => {
+	const buttons = document.querySelectorAll(`[data-popup-id="${popup.id}"]`)
+	for (const btn of buttons) {
+		btn.addEventListener('click', function () {
+			popup.classList.add('active')
+			document.body.style.overflow = 'hidden'
+		})
+	}
+
+	const closeBtn = popup.querySelector('.popup__close')
+	popup.querySelector('.popup__close').addEventListener('click', function () {
+		popup.classList.remove('active')
+		document.body.style.overflow = 'auto'
+	})
 })

@@ -5,7 +5,7 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	z-index: 20;
+	z-index: 21;
 	transition: background-color ease-in-out 300ms;
 	pointer-events: none;
 	&.active {
@@ -33,10 +33,13 @@
 }
 
 .menu-sidebar__actions {
-	display: inline-flex;
+	position: fixed;
+	display: flex;
+	top: 0;
+	left: 0;
 	align-items: center;
 	padding: 0 12px;
-	pointer-events: all;
+	z-index: 21;
 }
 
 .menu-icon {
