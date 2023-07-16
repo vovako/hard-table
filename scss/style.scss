@@ -35,6 +35,9 @@ $md4: 479.98;
 }
 
 .main {
+	// @media (pointer: coarse) {
+	// 	width: 100%;
+	// }
 }
 
 .body {
@@ -43,6 +46,9 @@ $md4: 479.98;
 	transition: ease-in-out 300ms;
 	transition-property: margin, padding;
 	height: 100%;
+	// @media (pointer: coarse) {
+	// 	width: 100vw;
+	// }
 }
 
 .body-wrapper {
@@ -50,7 +56,6 @@ $md4: 479.98;
 	gap: 16px;
 	position: sticky;
 	left: 0; //edit in js
-	width: 100vw; //edit in js
 	transition: left ease-in-out 300ms;
 	z-index: 20;
 }
@@ -314,10 +319,10 @@ input[type="radio"]:checked + label:after {
 		visibility: hidden;
 		top: 0;
 		width: min(500px, 90vw);
-		transform: translate(-50%, -100% );
+		transform: translate(-50%, -100%);
 		z-index: 0;
 
-		transition: 300ms ease-in-out; 
+		transition: 300ms ease-in-out;
 		transition-property: opacity, visibility;
 
 		&.bottom {
@@ -329,7 +334,7 @@ input[type="radio"]:checked + label:after {
 
 	&:hover {
 		.tip {
-			opacity: 1; 
+			opacity: 1;
 			visibility: visible;
 		}
 	}
@@ -379,7 +384,7 @@ input[type="radio"]:checked + label:after {
 			height: 2px;
 			width: 80%;
 			background-color: #fff;
-			&:first-child{
+			&:first-child {
 				transform: translate(-50%, -50%) rotate(45deg);
 			}
 		}
@@ -388,7 +393,25 @@ input[type="radio"]:checked + label:after {
 		visibility: visible;
 	}
 }
-
+.loading {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(white, 0.7);
+	z-index: 100;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(3px);
+	display: none;
+	&.active {
+		display: flex;
+	}
+	img {
+		width: 100px;
+	}
+}
 
 @import "menu-sidebar";
 @import "header";

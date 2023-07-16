@@ -15,7 +15,7 @@
 	transition: transform ease-in-out 300ms;
 
 	@media (any-pointer: coarse) {
-		width: 100%;
+		width: 100vw;
 		top: auto;
 		border-right: none;
 		border-top: 1px solid black;

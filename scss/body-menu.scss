@@ -2,6 +2,10 @@
 	min-width: 140px;
 	width: max-content;
 
+	@media (pointer: coarse) {
+		width: calc(100vw - 20px);
+	}
+
 	&__wrapper {
 		position: sticky;
 		top: 0;
@@ -20,13 +24,21 @@
 	&__item {
 		color: gray;
 		padding: 8px 12px;
+		font-size: 17px;
 		cursor: pointer;
+
+		@media (pointer: coarse) {
+			text-align: right;
+			padding: 3px 6px;
+			font-size: 14px;
+		}
 
 		&:not(:last-child) {
 			border-bottom: 1px rgb(176, 176, 176) solid;
 		}
 		&.active {
-			color: orange;
+			background-color: rgba(orange, 0.3);
+			color: black;
 			cursor: default;
 		}
 		&:not(.active) {

@@ -6,14 +6,22 @@ const bodySection = document.querySelector('.body')
 const bodyMenu = document.querySelector('.body-menu__wrapper')
 const bodyTable = document.querySelector('.body-table')
 const bodyWrapper = document.querySelector('.body-wrapper')
+const loading = document.querySelector('.loading')
+const tableSettingsBlock = document.querySelector('.table-settings')
 
 const isMobile = window.matchMedia('(any-pointer: coarse)').matches
 
 window.addEventListener('load', function () {
-	if (!isMobile) {
+	if (isMobile) {
+		sidebarMenu.style.zIndex = Number(getComputedStyle(bodyWrapper).getPropertyValue('z-index')) + 1
+		bodySection.style.paddingBottom = sidebarMenu.clientHeight + 10 + 'px'
+	} else {
+		sidebarMenuActions.classList.add('active')
 		sidebarMenu.style.minWidth = sidebarMenuActions.clientWidth + 'px'
 		header.style.height = sidebarMenuActions.clientHeight + 'px'
 		header.style.paddingLeft = sidebarMenuActions.clientWidth + 'px'
+		tableSettingsBlock.classList.add('active')
+		
 		openMenuSidebar()
 		updatePageTitle()
 	}
@@ -58,8 +66,6 @@ document.addEventListener('click', function (e) {
 		selectedTags.add(Number(target.dataset.tagId))
 		updateMultiSelect()
 	} else if (target.classList.contains('body-menu__item')) {
-		target.parentElement.querySelector('.body-menu__item.active').classList.remove('active')
-		target.classList.add('active')
 		e.preventDefault()
 		const blockID = target.getAttribute('href').substr(1)
 		document.getElementById(blockID).scrollIntoView({
@@ -69,6 +75,21 @@ document.addEventListener('click', function (e) {
 		setTimeout(() => {
 			bodyMenu.classList.remove('lock')
 		}, 700)
+
+		if (isMobile) {
+			if (target.classList.contains('active')) {
+				tableSettingsBlock.classList.remove('active')
+				target.classList.remove('active')
+			} else {
+				tableSettingsBlock.classList.add('active')
+				target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
+				target.classList.add('active')
+			}
+			
+		} else {
+			target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
+			target.classList.add('active')
+		}
 	} else if (target.classList.contains('table-fix-cb')) {
 		if (target.classList.contains('target-row')) {
 			const tr = target.closest('tr')
@@ -281,7 +302,7 @@ function updateFixRows() {
 
 	const entries = Object.entries(fixedRows)
 	let prevRowElem = null
-	let yPos = header.classList.contains('active') ? header.clientHeight : 0
+	let yPos = header.classList.contains('active') && !isMobile ? header.clientHeight : 0
 	for (const [pos, id] of entries) {
 		if (prevRowElem) yPos += prevRowElem.getBoundingClientRect().height
 		const row = document.querySelector(`[data-row-id="${id}"]`)
@@ -300,7 +321,7 @@ function updateFixColumns() {
 
 	const entries = Object.entries(fixedColumns)
 	let prevColElem = null
-	let xPos = sidebarMenu.classList.contains('active') ? sidebarMenu.clientWidth : 0
+	let xPos = sidebarMenu.classList.contains('active') && !isMobile ? sidebarMenu.clientWidth : 0
 	for (const [pos, id] of entries) {
 
 		if (prevColElem) xPos += prevColElem.getBoundingClientRect().width
@@ -318,7 +339,7 @@ function updateFixColumns() {
 }
 
 const cbAllcb = document.querySelector('.all-cb-actions')
-cbAllcb.addEventListener('change', function() {
+cbAllcb.addEventListener('change', function () {
 	const allActionCb = document.querySelector('tbody').querySelectorAll('.action-cb')
 	if (cbAllcb.checked) {
 		allActionCb.forEach(c => c.checked = true)
@@ -329,13 +350,13 @@ cbAllcb.addEventListener('change', function() {
 
 const allTooltips = document.querySelectorAll('.tooltip')
 allTooltips.forEach(tooltip => {
-	tooltip.addEventListener('mouseover', function() {
-		const tip = tooltip.querySelector('.tip') 
+	tooltip.addEventListener('mouseover', function () {
+		const tip = tooltip.querySelector('.tip')
 		tip.classList.remove('bottom')
 
 		if (tip.getBoundingClientRect().top < 0) {
 			tip.classList.add('bottom')
-		} 
+		}
 	})
 })
 
@@ -350,8 +371,29 @@ allPopup.forEach(popup => {
 	}
 
 	const closeBtn = popup.querySelector('.popup__close')
-	popup.querySelector('.popup__close').addEventListener('click', function () {
+	closeBtn.addEventListener('click', function () {
 		popup.classList.remove('active')
 		document.body.style.overflow = 'auto'
 	})
+})
+
+const bodyMenuSearch = document.querySelector('.body-menu__search-btn')
+const sortTableBtn = document.querySelector('.col-sort__btn')
+bodyMenuSearch.addEventListener('click', function () {
+	loading.classList.add('active')
+	sortTableBtn.classList.remove('active')
+	setTimeout(() => {
+		loading.classList.remove('active')
+		bodyTable.classList.add('active')
+	}, 1000);
+})
+
+sortTableBtn.addEventListener('click', function () {
+	sortTableBtn.classList.toggle('active')
+
+	loading.classList.add('active')
+	setTimeout(() => {
+		loading.classList.remove('active')
+		bodyTable.classList.add('active')
+	}, 1000);
 })

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
 	<title>Document</title>
 	<link rel="stylesheet" href="css/style.css">
 	<script type="module" defer src="js/script.js"></script>
@@ -388,6 +388,12 @@
 					</div>
 				</div>
 				<div class="body-table">
+					<div class="body-table__actions">
+						<button class="action-btn">Действие</button>
+						<button class="action-btn">Действие</button>
+						<button class="action-btn">Действие</button>
+						<button class="action-btn">Действие</button>
+					</div>
 					<table>
 						<thead>
 
@@ -395,7 +401,6 @@
 								<th><input type="checkbox" class="table-fix-cb target-row" id="table-fix-cb1"><label
 										for="table-fix-cb1"><i class="fa-solid fa-thumbtack"></i></label></th>
 								<th data-col-id="1">
-									<button class="action-btn">Действие</button>
 									<input class="all-cb-actions" type="checkbox" id="table-cb1"><label for="table-cb1"></label>
 									<div class="col-fix-ch"><input type="checkbox" class="table-fix-cb target-col"
 											id="table-fix-col0"><label for="table-fix-col0"><i class="fa-solid fa-thumbtack"></i></label>
@@ -1640,10 +1645,13 @@
 	<button class="to-begin-table"><i class="fa-solid fa-circle-up"></i></button>
 	<div id="graph-popup-id" class="popup table-graph-popup">
 		<div class="popup__content">
-			<button class="popup__close"><span></span><span></span></button>
-			<div class="image"><img src="img/table-graph2.png" alt=""></div>
+			<div class="popup__wrapper">
+				<button class="popup__close"><span></span><span></span></button>
+				<img src="img/table-graph2.png" alt="">
+			</div>
 		</div>
 	</div>
+	
 	<div id="list-popup-id" class="popup table-list-popup">
 		
 		<div class="popup__content">
@@ -1818,6 +1826,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="loading"><img src="img/icons/loading.svg" alt=""></div>
 	
 </body>
 

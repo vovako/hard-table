@@ -1,10 +1,19 @@
 .table-settings {
 	background-color: #fff;
 	border-radius: 12px;
-	flex: 1;
+	// flex: 1;
 	padding: 8px 16px;
 	border: 1px rgb(176, 176, 176) solid;
 	height: fit-content;
+	display: none;
+
+	@media (pointer: coarse) {
+		width: calc(100vw - 20px);
+	}
+
+	&.active {
+		display: block;
+	}
 
 	& > * {
 		margin-bottom: 10px;

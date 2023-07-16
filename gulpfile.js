@@ -2,6 +2,7 @@ import gulp from 'gulp'
 import bs from 'browser-sync'
 import dartSass from 'sass'
 import gulpSass from 'gulp-sass'
+import autoprefixer from 'gulp-autoprefixer'
 const sass = gulpSass(dartSass)
 
 const path = {
@@ -21,6 +22,7 @@ const path = {
 function scss() {
 	return gulp.src(path.src.scss)
 		.pipe(sass())
+		.pipe(autoprefixer())
 		.pipe(gulp.dest(path.build.css))
 		.pipe(bs.stream())
 }

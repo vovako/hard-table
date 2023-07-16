@@ -85,13 +85,14 @@ body {
   gap: 16px;
   position: sticky;
   left: 0;
-  width: 100vw;
   transition: left ease-in-out 300ms;
   z-index: 20;
 }
 
 .select-with-image {
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   position: relative;
   background-color: transparent;
 }
@@ -120,6 +121,7 @@ body {
   left: 0;
   bottom: 0;
   transform: translateY(100%);
+  width: -moz-max-content;
   width: max-content;
   visibility: hidden;
   z-index: 21;
@@ -394,6 +396,27 @@ input[type=radio]:checked + label:after {
   visibility: visible;
 }
 
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  display: none;
+}
+.loading.active {
+  display: flex;
+}
+.loading img {
+  width: 100px;
+}
+
 .menu-sidebar {
   background-color: #fff;
   position: fixed;
@@ -411,7 +434,7 @@ input[type=radio]:checked + label:after {
 }
 @media (any-pointer: coarse) {
   .menu-sidebar {
-    width: 100%;
+    width: 100vw;
     top: auto;
     border-right: none;
     border-top: 1px solid black;
@@ -600,12 +623,15 @@ input[type=radio]:checked + label:after {
 
 .menu-sidebar__actions {
   position: fixed;
-  display: flex;
   top: 0;
   left: 0;
   align-items: center;
   padding: 0 12px;
   z-index: 21;
+  display: none;
+}
+.menu-sidebar__actions.active {
+  display: flex;
 }
 
 .menu-icon {
@@ -626,7 +652,8 @@ input[type=radio]:checked + label:after {
 .logo img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .logo .image {
   width: 60px;
@@ -648,7 +675,13 @@ input[type=radio]:checked + label:after {
 
 .body-menu {
   min-width: 140px;
+  width: -moz-max-content;
   width: max-content;
+}
+@media (pointer: coarse) {
+  .body-menu {
+    width: calc(100vw - 20px);
+  }
 }
 .body-menu__wrapper {
   position: sticky;
@@ -666,13 +699,22 @@ input[type=radio]:checked + label:after {
 .body-menu__item {
   color: gray;
   padding: 8px 12px;
+  font-size: 17px;
   cursor: pointer;
+}
+@media (pointer: coarse) {
+  .body-menu__item {
+    text-align: right;
+    padding: 3px 6px;
+    font-size: 14px;
+  }
 }
 .body-menu__item:not(:last-child) {
   border-bottom: 1px rgb(176, 176, 176) solid;
 }
 .body-menu__item.active {
-  color: orange;
+  background-color: rgba(255, 165, 0, 0.3);
+  color: black;
   cursor: default;
 }
 @media (pointer: fine) {
@@ -699,10 +741,19 @@ input[type=radio]:checked + label:after {
 .table-settings {
   background-color: #fff;
   border-radius: 12px;
-  flex: 1;
   padding: 8px 16px;
   border: 1px rgb(176, 176, 176) solid;
+  height: -moz-fit-content;
   height: fit-content;
+  display: none;
+}
+@media (pointer: coarse) {
+  .table-settings {
+    width: calc(100vw - 20px);
+  }
+}
+.table-settings.active {
+  display: block;
 }
 .table-settings > * {
   margin-bottom: 10px;
@@ -710,6 +761,7 @@ input[type=radio]:checked + label:after {
 
 .table-settings-select {
   border: rgb(176, 176, 176) 1px solid;
+  width: -moz-max-content;
   width: max-content;
   margin-left: auto;
 }
@@ -726,6 +778,7 @@ input[type=radio]:checked + label:after {
 
 .table-settings-select-with-textarea {
   border: rgb(176, 176, 176) 1px solid;
+  width: -moz-max-content;
   width: max-content;
 }
 .table-settings-select-with-textarea ~ .target {
@@ -736,13 +789,20 @@ input[type=radio]:checked + label:after {
 }
 
 .body-table {
-  width: 100%;
   margin-top: 24px;
+  display: none;
+}
+.body-table.active {
+  display: block;
+}
+.body-table__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 .body-table table {
-  width: 100%;
   border-collapse: collapse;
-  position: relative;
 }
 .body-table table th,
 .body-table table td {
@@ -774,7 +834,8 @@ input[type=radio]:checked + label:after {
 .body-table .table-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .body-table .col-sort {
   padding-right: 3em;
@@ -818,14 +879,21 @@ input[type=radio]:checked + label:after {
   border: 0;
   display: none;
 }
+@media (pointer: coarse) {
+  .to-begin-table {
+    bottom: 70px;
+    right: 50px;
+  }
+}
 .to-begin-table.active {
   display: block;
 }
 
 .action-btn {
-  margin-bottom: 4px;
   background-color: white;
-  padding: 2px;
+  padding: 2px 6px;
+  font-size: 18px;
+  border-radius: 6px;
 }
 
 .table-graph-btn {
@@ -840,20 +908,26 @@ input[type=radio]:checked + label:after {
   font-size: 20px;
 }
 
+.table-graph-popup {
+  overflow-y: auto;
+}
 .table-graph-popup .popup__content {
-  width: max-content;
-  height: max-content;
-  min-height: auto;
+  padding: 40px 0;
+  width: 80vw;
+  transform: translate(-50%, 0);
+  top: auto;
   background-color: transparent;
 }
-.table-graph-popup .popup__content .image {
-  max-width: 90vw;
-  height: 90vh;
+.table-graph-popup .popup__wrapper {
+  position: relative;
+  background-color: #fff;
+  padding: 10px;
 }
-.table-graph-popup .popup__content .image img {
+.table-graph-popup .popup__wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .table-list-popup {
@@ -861,7 +935,7 @@ input[type=radio]:checked + label:after {
 }
 .table-list-popup .popup__content {
   padding: 40px 0;
-  width: min(1000px, 90vw);
+  width: min(1000px, 80vw);
   transform: translate(-50%, 0);
   top: auto;
   background-color: transparent;
