@@ -7,7 +7,7 @@ const bodyMenu = document.querySelector('.body-menu__wrapper')
 const bodyTable = document.querySelector('.body-table')
 const bodyWrapper = document.querySelector('.body-wrapper')
 const loading = document.querySelector('.loading')
-const tableSettingsBlock = document.querySelector('.table-settings')
+// const tableSettingsBlock = document.querySelector('.table-settings')
 
 const isMobile = window.matchMedia('(any-pointer: coarse)').matches
 
@@ -20,8 +20,8 @@ window.addEventListener('load', function () {
 		sidebarMenu.style.minWidth = sidebarMenuActions.clientWidth + 'px'
 		header.style.height = sidebarMenuActions.clientHeight + 'px'
 		header.style.paddingLeft = sidebarMenuActions.clientWidth + 'px'
-		tableSettingsBlock.classList.add('active')
-		
+		// tableSettingsBlock.classList.add('active')
+
 		openMenuSidebar()
 		updatePageTitle()
 	}
@@ -30,7 +30,7 @@ window.addEventListener('load', function () {
 const menuBtn = document.querySelector('.menu-icon')
 if (menuBtn) {
 	menuBtn.addEventListener('click', function () {
-
+		resetFixedCells()
 		if (sidebarMenu.classList.contains('active')) {
 			closeMenuSidebar()
 		} else {
@@ -41,6 +41,7 @@ if (menuBtn) {
 //dynamic handler
 document.addEventListener('click', function (e) {
 	const target = e.target
+
 	if (target.classList.contains('menu-item') && !target.classList.contains('not-selectable')) {
 		target.parentElement.querySelector('.selected').classList.remove('selected')
 		target.classList.add('selected')
@@ -66,6 +67,7 @@ document.addEventListener('click', function (e) {
 		selectedTags.add(Number(target.dataset.tagId))
 		updateMultiSelect()
 	} else if (target.classList.contains('body-menu__item')) {
+
 		e.preventDefault()
 		const blockID = target.getAttribute('href').substr(1)
 		document.getElementById(blockID).scrollIntoView({
@@ -76,20 +78,23 @@ document.addEventListener('click', function (e) {
 			bodyMenu.classList.remove('lock')
 		}, 700)
 
-		if (isMobile) {
-			if (target.classList.contains('active')) {
-				tableSettingsBlock.classList.remove('active')
-				target.classList.remove('active')
-			} else {
-				tableSettingsBlock.classList.add('active')
-				target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
-				target.classList.add('active')
-			}
-			
-		} else {
-			target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
-			target.classList.add('active')
-		}
+		target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
+		target.classList.add('active')
+
+		// if (isMobile) {
+		// 	if (target.classList.contains('active')) {
+		// 		tableSettingsBlock.classList.remove('active')
+		// 		target.classList.remove('active')
+		// 	} else {
+		// 		tableSettingsBlock.classList.add('active')
+		// 		target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
+		// 		target.classList.add('active')
+		// 	}
+
+		// } else {
+		// 	target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
+		//  target.classList.add('active')
+		// }
 	} else if (target.classList.contains('table-fix-cb')) {
 		if (target.classList.contains('target-row')) {
 			const tr = target.closest('tr')
@@ -99,6 +104,18 @@ document.addEventListener('click', function (e) {
 		} else if (target.classList.contains('target-col')) {
 			const th = target.closest('th')
 			toggleFixColumn(th.cellIndex, th.dataset.colId)
+		}
+	} else if (target.classList.contains('table-icon-action')) {
+		function markLast(type) {
+			document.querySelector(`.${type}.last`)?.classList.remove('last')
+			target.classList.add('last')
+		}
+		if (target.classList.contains('table-link-btn')) {
+			markLast('table-link-btn')
+		} else if (target.classList.contains('table-list-btn')) {
+			markLast('table-list-btn')
+		} else if (target.classList.contains('table-graph-btn')) {
+			markLast('table-graph-btn')
 		}
 	}
 })
@@ -231,25 +248,29 @@ function updateMultiSelect() {
 	}
 }
 
-const bodyMenuItems = document.querySelectorAll('.body-menu__item')
-const observedSections = document.querySelectorAll('.observed-section')
-const menuObserver = new IntersectionObserver((entries) => {
-	entries.forEach(entry => {
-		if (entry.isIntersecting) {
+if (!isMobile) {
+	const bodyMenuItems = document.querySelectorAll('.body-menu__item')
+	const observedSections = document.querySelectorAll('.observed-section')
+	const menuObserver = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
 
-			bodyMenuItems.forEach(item => {
-				const id = item.getAttribute('href').substring(1)
-				if (id === entry.target.id && !bodyMenu.classList.contains('lock')) {
-					[...bodyMenuItems].forEach(i => i.classList.remove('active'))
-					item.classList.add('active')
-				}
-			})
-		}
+				bodyMenuItems.forEach(item => {
+					const id = item.getAttribute('href').substring(1)
+					if (id === entry.target.id && !bodyMenu.classList.contains('lock')) {
+						[...bodyMenuItems].forEach(i => i.classList.remove('active'))
+						item.classList.add('active')
+					}
+				})
+			}
+		})
+	}, {
+		threshold: 0.01
 	})
-}, {
-	threshold: 0.01
-})
-observedSections.forEach(item => menuObserver.observe(item))
+	observedSections.forEach(item => menuObserver.observe(item))
+}
+
+
 
 const toTopBtn = document.querySelector('.to-begin-table')
 toTopBtn.addEventListener('click', function () {
@@ -260,6 +281,7 @@ toTopBtn.addEventListener('click', function () {
 		behavior: 'smooth'
 	})
 })
+
 const tableObserverIn = new IntersectionObserver((entries) => {
 	const entry = entries[0]
 	if (entry.isIntersecting) {
@@ -338,6 +360,14 @@ function updateFixColumns() {
 	}
 }
 
+function resetFixedCells() {
+	fixedColumns = {}
+	fixedRows = {}
+	updateFixRows()
+	updateFixColumns()
+	document.querySelectorAll('.table-fix-cb').forEach(cb => cb.checked = false)
+}
+
 const cbAllcb = document.querySelector('.all-cb-actions')
 cbAllcb.addEventListener('change', function () {
 	const allActionCb = document.querySelector('tbody').querySelectorAll('.action-cb')
@@ -385,6 +415,7 @@ bodyMenuSearch.addEventListener('click', function () {
 	setTimeout(() => {
 		loading.classList.remove('active')
 		bodyTable.classList.add('active')
+		resetFixedCells()
 	}, 1000);
 })
 
@@ -395,5 +426,6 @@ sortTableBtn.addEventListener('click', function () {
 	setTimeout(() => {
 		loading.classList.remove('active')
 		bodyTable.classList.add('active')
+		resetFixedCells()
 	}, 1000);
 })

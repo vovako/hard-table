@@ -353,9 +353,11 @@ input[type="radio"]:checked + label:after {
 	height: 100%;
 	background-color: rgba(black, 0.5);
 	visibility: hidden;
+	transition: 300ms all ease-in-out;
+	opacity: 0;
+
 	&__content {
 		width: 350px;
-		min-height: 300px;
 		padding: 10px;
 		position: absolute;
 		top: 50%;
@@ -365,15 +367,14 @@ input[type="radio"]:checked + label:after {
 	}
 	&__close {
 		position: absolute;
-		top: 3px;
+		top: 0;
 		right: 0;
 		width: 30px;
 		height: 30px;
 		border: none;
-		background-color: transparent;
-		transform: translate(100%, 0);
+		background-color: black;
 		&:hover {
-			background-color: rgba(blue, 0.05);
+			background-color: red;
 		}
 		span {
 			position: absolute;
@@ -391,6 +392,7 @@ input[type="radio"]:checked + label:after {
 	}
 	&.active {
 		visibility: visible;
+		opacity: 1;
 	}
 }
 .loading {
