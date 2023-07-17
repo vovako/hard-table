@@ -43,7 +43,7 @@ window.addEventListener('load', function () {
 const menuBtn = document.querySelector('.menu-icon')
 if (menuBtn) {
 	menuBtn.addEventListener('click', function () {
-		resetFixedCells()
+		
 		if (sidebarMenu.classList.contains('active')) {
 			closeMenuSidebar()
 		} else {
