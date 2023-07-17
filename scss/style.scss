@@ -35,9 +35,6 @@ $md4: 479.98;
 }
 
 .main {
-	// @media (pointer: coarse) {
-	// 	width: 100%;
-	// }
 }
 
 .body {
@@ -46,18 +43,16 @@ $md4: 479.98;
 	transition: ease-in-out 300ms;
 	transition-property: margin, padding;
 	height: 100%;
-	// @media (pointer: coarse) {
-	// 	width: 100vw;
-	// }
 }
 
 .body-wrapper {
 	display: flex;
 	gap: 16px;
 	position: sticky;
-	left: 0; //edit in js
+	left: 10px; //edit in js
 	transition: left ease-in-out 300ms;
 	z-index: 20;
+	width: calc(100vw - 20px);
 }
 
 .select-with-image {
@@ -258,6 +253,8 @@ input[type="radio"]:checked + label:after {
 			padding: 4px;
 			outline: none;
 			border: none;
+			flex: 1;
+			background-color: transparent;
 		}
 	}
 
@@ -280,12 +277,17 @@ input[type="radio"]:checked + label:after {
 	&__list {
 		overflow-y: scroll;
 		display: none;
+		background-color: white;
+		&:not(:empty) {
+			border: 1px solid gray;
+		}
 
 		&.active {
 			display: block;
 		}
 		li {
 			padding: 4px;
+			padding-left: 10px;
 			cursor: pointer;
 			&:not(:last-child) {
 				border-bottom: 1px solid gray;
@@ -395,18 +397,11 @@ input[type="radio"]:checked + label:after {
 		opacity: 1;
 	}
 }
+
 .loading {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(white, 0.7);
-	z-index: 100;
-	align-items: center;
-	justify-content: center;
-	backdrop-filter: blur(3px);
 	display: none;
+	justify-content: center;
+	z-index: 1;
 	&.active {
 		display: flex;
 	}

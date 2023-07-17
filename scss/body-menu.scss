@@ -11,6 +11,17 @@
 		top: 0;
 		transition: ease-in-out 300ms top;
 	}
+	&__spoiler {
+		overflow: hidden;
+		max-height: 0;
+		transition: 300ms max-height ease-in-out;
+	}
+	&__spoiler-content {
+		padding: 10px;
+		box-shadow: inset 0 0 5px black;
+		background-color: rgb(240, 240, 240);
+	}
+
 
 	&__list {
 		background-color: #fff;

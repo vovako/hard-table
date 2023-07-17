@@ -84,9 +84,10 @@ body {
   display: flex;
   gap: 16px;
   position: sticky;
-  left: 0;
+  left: 10px;
   transition: left ease-in-out 300ms;
   z-index: 20;
+  width: calc(100vw - 20px);
 }
 
 .select-with-image {
@@ -274,6 +275,8 @@ input[type=radio]:checked + label:after {
   padding: 4px;
   outline: none;
   border: none;
+  flex: 1;
+  background-color: transparent;
 }
 .multiSelect__tag {
   background-color: rgb(49, 151, 214);
@@ -292,12 +295,17 @@ input[type=radio]:checked + label:after {
 .multiSelect__list {
   overflow-y: scroll;
   display: none;
+  background-color: white;
+}
+.multiSelect__list:not(:empty) {
+  border: 1px solid gray;
 }
 .multiSelect__list.active {
   display: block;
 }
 .multiSelect__list li {
   padding: 4px;
+  padding-left: 10px;
   cursor: pointer;
 }
 .multiSelect__list li:not(:last-child) {
@@ -398,18 +406,9 @@ input[type=radio]:checked + label:after {
 }
 
 .loading {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.7);
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
-  -webkit-backdrop-filter: blur(3px);
-          backdrop-filter: blur(3px);
   display: none;
+  justify-content: center;
+  z-index: 1;
 }
 .loading.active {
   display: flex;
@@ -689,6 +688,16 @@ input[type=radio]:checked + label:after {
   top: 0;
   transition: ease-in-out 300ms top;
 }
+.body-menu__spoiler {
+  overflow: hidden;
+  max-height: 0;
+  transition: 300ms max-height ease-in-out;
+}
+.body-menu__spoiler-content {
+  padding: 10px;
+  box-shadow: inset 0 0 5px black;
+  background-color: rgb(240, 240, 240);
+}
 .body-menu__list {
   background-color: #fff;
   border-radius: 12px;
@@ -878,7 +887,7 @@ input[type=radio]:checked + label:after {
 @media (pointer: coarse) {
   .to-begin-table {
     bottom: 70px;
-    right: 50px;
+    right: 20px;
   }
 }
 .to-begin-table.active {
@@ -905,7 +914,8 @@ input[type=radio]:checked + label:after {
 .table-graph-popup .popup__content {
   width: -moz-max-content;
   width: max-content;
-  height: 100%;
+  height: -moz-max-content;
+  height: max-content;
   max-width: 90vw;
   max-height: 90vh;
   box-shadow: 0 0 10px black;
@@ -917,13 +927,24 @@ input[type=radio]:checked + label:after {
      object-fit: contain;
 }
 
+.table-list-popup__close-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  top: 0;
+  padding-bottom: 20px;
+}
 .table-list-popup .popup__content {
   width: -moz-max-content;
   width: max-content;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
+  padding: 0;
 }
-.table-list-popup .popup__content li {
+.table-list-popup .popup__content ul {
+  padding: 10px;
+}
+.table-list-popup .popup__content ul li {
   margin-bottom: 8px;
 }

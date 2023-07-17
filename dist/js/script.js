@@ -7,7 +7,7 @@ const bodyMenu = document.querySelector('.body-menu__wrapper')
 const bodyTable = document.querySelector('.body-table')
 const bodyWrapper = document.querySelector('.body-wrapper')
 const loading = document.querySelector('.loading')
-// const tableSettingsBlock = document.querySelector('.table-settings')
+const tableSettings = document.querySelector('.table-settings')
 
 const isMobile = window.matchMedia('(any-pointer: coarse)').matches
 
@@ -15,6 +15,19 @@ window.addEventListener('load', function () {
 	if (isMobile) {
 		sidebarMenu.style.zIndex = Number(getComputedStyle(bodyWrapper).getPropertyValue('z-index')) + 1
 		bodySection.style.paddingBottom = sidebarMenu.clientHeight + 10 + 'px'
+
+		const settingsSections = tableSettings.querySelectorAll('section')
+		settingsSections.forEach(section => {
+			const spoilerBtn = document.querySelector(`[href="#${section.id}"]`)
+			spoilerBtn.insertAdjacentHTML('afterend', `
+			<div class="body-menu__spoiler">
+				<div class="body-menu__spoiler-content">
+				</div>
+			</div>
+			`)
+			spoilerBtn.nextElementSibling.querySelector('.body-menu__spoiler-content').appendChild(section)
+		})
+		tableSettings.remove()
 	} else {
 		sidebarMenuActions.classList.add('active')
 		sidebarMenu.style.minWidth = sidebarMenuActions.clientWidth + 'px'
@@ -78,23 +91,26 @@ document.addEventListener('click', function (e) {
 			bodyMenu.classList.remove('lock')
 		}, 700)
 
-		target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
-		target.classList.add('active')
+		
 
-		// if (isMobile) {
-		// 	if (target.classList.contains('active')) {
-		// 		tableSettingsBlock.classList.remove('active')
-		// 		target.classList.remove('active')
-		// 	} else {
-		// 		tableSettingsBlock.classList.add('active')
-		// 		target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
-		// 		target.classList.add('active')
-		// 	}
+		if (isMobile) {
+			const spoiler = target.nextElementSibling
 
-		// } else {
-		// 	target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
-		//  target.classList.add('active')
-		// }
+			if (target.classList.contains('active')) {
+				target.classList.remove('active')
+				spoiler.style.maxHeight = null
+				spoiler.style.overflow = null
+			} else {
+				target.classList.add('active')
+				spoiler.style.maxHeight = spoiler.scrollHeight + 'px'
+				spoiler.style.overflow = 'visible'
+			}
+
+		} else {
+
+			target.parentElement.querySelector('.body-menu__item.active')?.classList.remove('active')
+			target.classList.add('active')
+		}
 	} else if (target.classList.contains('table-fix-cb')) {
 		if (target.classList.contains('target-row')) {
 			const tr = target.closest('tr')
@@ -116,6 +132,13 @@ document.addEventListener('click', function (e) {
 			markLast('table-list-btn')
 		} else if (target.classList.contains('table-graph-btn')) {
 			markLast('table-graph-btn')
+			const graphPopupContainer = document.querySelector('#graph-popup-id').querySelector('.popup__content')
+			const img = graphPopupContainer.querySelector('img')
+			if (img.clientHeight > graphPopupContainer.clientHeight) {
+				graphPopupContainer.style.height = graphPopupContainer.clientHeight + 'px'
+			} else if (img.clientWidth > graphPopupContainer.clientWidth) (
+				graphPopupContainer.style.width = graphPopupContainer.clientWidth + 'px'
+			)
 		}
 	}
 })
@@ -410,22 +433,40 @@ allPopup.forEach(popup => {
 const bodyMenuSearch = document.querySelector('.body-menu__search-btn')
 const sortTableBtn = document.querySelector('.col-sort__btn')
 bodyMenuSearch.addEventListener('click', function () {
+	if (bodyTable.classList.contains('active')) bodyTable.classList.remove('active')
 	loading.classList.add('active')
+	loading.style.margin = '20px 0'
 	sortTableBtn.classList.remove('active')
+	loading.scrollIntoView({
+		behavior: 'smooth'
+	})
+	resetFixedCells()
 	setTimeout(() => {
 		loading.classList.remove('active')
+		loading.style.margin = null
 		bodyTable.classList.add('active')
-		resetFixedCells()
-	}, 1000);
+	}, 2000);
 })
 
 sortTableBtn.addEventListener('click', function () {
+	const tbody = document.querySelector('tbody')
+	const thead = document.querySelector('thead')
 	sortTableBtn.classList.toggle('active')
 
 	loading.classList.add('active')
+	tbody.style.filter = 'blur(8px)'
+	loading.style.position = 'absolute'
+	loading.style.top = scrollY + window.innerHeight - (window.innerHeight - thead.getBoundingClientRect().bottom) / 2 - loading.clientHeight / 2 + 'px'
+	loading.style.left = scrollX + (window.innerWidth + isMobile ? sidebarMenu.clientWidth + 10 : 0) / 2 - loading.clientWidth / 2 + 'px'
+	resetFixedCells()
+
 	setTimeout(() => {
+		tbody.style.filter = null
+		loading.style.position = null
+		loading.style.top = null
+		loading.style.left = null
 		loading.classList.remove('active')
 		bodyTable.classList.add('active')
-		resetFixedCells()
-	}, 1000);
+	}, 2000);
 })
+
